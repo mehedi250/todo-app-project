@@ -5,12 +5,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import todo
 
-@login_required
+@login_required(login_url='login-page')
 def home(request):
     todos = todo.objects.filter(user=request.user)
     return render(request, 'todoapp/index.html', {'todos': todos})
 
-@login_required
+@login_required(login_url='login-page')
 def create_task(request):
     if request.method == 'POST':
         task = request.POST.get('task')
@@ -62,12 +62,12 @@ def logout_view(request):
     logout(request)
     return redirect('login-page')
 
-@login_required
+@login_required(login_url='login-page')
 def delete_task(request, id):
     todo.objects.filter(user=request.user, id=id).delete()
     return redirect('home-page')
 
-@login_required
+@login_required(login_url='login-page')
 def update_task(request, id):
     if request.method == 'POST':
         status = request.POST.get('status')
